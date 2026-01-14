@@ -1,7 +1,7 @@
 # Projekt-idé: 
 
 ### Beskrivning:
-Ett system för att registrera och spåra paket från “skickat” till “levererat”.
+Ett system (konstruerat i expo?) för att registrera och spåra paket från “skickat” till “levererat”.
 
 ### Funktioner:
 
