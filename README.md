@@ -18,3 +18,11 @@ Ett system (konstruerat i expo?) för att registrera och spåra paket från “s
 - Go: REST API, SQLite/Postgres
 
 - React: lista + detaljerad vy, status-badge
+
+### InterEast:
+- Cloud platform: Google Cloud
+- Main backend language: Go
+- Main frontend language: Typescript
+- APIs: gRPC (code generation för Go och Typescript)
+- Frontend tech: React, Redux, Ant Design (UI library)
+- Deployment/operations: Kubernetes, Istio, Terraform
