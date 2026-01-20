@@ -24,7 +24,7 @@ export default function Login() {
     if (currentUser) {
       router.replace("/")
     }
-  }, [currentUser])
+  }, [currentUser, router])
 
   return (
     <View

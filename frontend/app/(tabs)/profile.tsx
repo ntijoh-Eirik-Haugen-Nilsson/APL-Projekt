@@ -1,8 +1,7 @@
 import { View, Text, Pressable } from "react-native"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { logout } from "../../store/AuthSlice"
 import { useRouter } from "expo-router"
-import { useSelector } from "react-redux"
 
 export default function Profile() {
   const dispatch = useDispatch()
