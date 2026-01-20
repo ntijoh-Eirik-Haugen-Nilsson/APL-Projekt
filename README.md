@@ -23,6 +23,6 @@ Ett system (konstruerat i expo?) för att registrera och spåra paket från “s
 - Cloud platform: Google Cloud
 - Main backend language: Go
 - Main frontend language: Typescript
-- APIs: gRPC (code generation för Go och Typescript)
+- APIs: gRPC (code generation for Go and Typescript)
 - Frontend tech: React, Redux, Ant Design (UI library)
 - Deployment/operations: Kubernetes, Istio, Terraform
