@@ -3,14 +3,15 @@ import { Text, View } from "react-native";
 export default function Booking() {
   return (
     <View
-      style={{
-        backgroundColor: "red",
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
+    style={{
+      backgroundColor: "red",
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    }}
     >
-      <Text>Booking</Text>
+      <Text>Booking
+      </Text>
     </View>
   );
 }
