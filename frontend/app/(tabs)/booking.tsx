@@ -1,4 +1,6 @@
 import { Text, View } from "react-native";
+import { Image } from "expo-image";
+const box = require("../../assets/images/box.png")
 
 export default function Booking() {
   return (
@@ -10,8 +12,14 @@ export default function Booking() {
       alignItems: "center",
     }}
     >
-      <Text>Booking
-      </Text>
+      <Image
+        source={box}
+        style={{ width: 200, height: 200 }}
+        contentFit="contain"
+      >
+
+      </Image>
+      <Text>Your package</Text>
     </View>
   );
 }
