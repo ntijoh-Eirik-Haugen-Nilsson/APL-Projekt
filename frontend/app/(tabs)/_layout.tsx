@@ -1,5 +1,5 @@
 import { Tabs, Link } from "expo-router"
-import { Pressable, Text } from "react-native"
+import { Pressable, Text, View} from "react-native"
 import { useSelector } from "react-redux"
 import { RootState } from "../../store"
 
@@ -8,18 +8,29 @@ function HeaderRight() {
 
   if (!user) {
     return (
-      <Link href="/login" asChild>
-        <Pressable style={{ marginRight: 16 }}>
-          <Text style={{ fontSize: 16 }}>Login</Text>
-        </Pressable>
-      </Link>
+        <View style={{ marginLeft: 16 , flexDirection: "row", alignItems: "center", gap: 8 }}>
+            <Link href="/login" asChild>
+                <Pressable style={{ marginRight: 16 }}>
+                <Text style={{ fontSize: 16 }}>Login</Text>
+                </Pressable>
+            </Link>
+        </View>
     )
   }
 
   return (
-    <Text style={{ marginRight: 16 }}>
-      {user.name}
-    </Text>
+    <View
+      style={{
+        marginRight: 16,
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+      }}
+    >
+      
+      <Text style={{ fontSize: 16 }}>{user.name}</Text>
+    </View>
+
   )
 }
 
@@ -43,5 +54,6 @@ export default function Layout() {
         options={{ title: "Profile" }}
       />
     </Tabs>
+    
   )
 }
