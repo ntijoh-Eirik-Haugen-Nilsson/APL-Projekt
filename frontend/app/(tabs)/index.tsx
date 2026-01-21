@@ -1,4 +1,6 @@
 import { Text, View } from "react-native";
+import { Image } from 'expo-image'
+const logo = require("../../assets/images/logo.png")
 
 export default function HomePage() {
   return (
@@ -10,7 +12,12 @@ export default function HomePage() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text>Welcome to:</Text>
+      <Image
+        source={logo}
+        style={{ width: 400, height: 400}}
+          contentFit="contain"    
+      />
     </View>
   );
 }
