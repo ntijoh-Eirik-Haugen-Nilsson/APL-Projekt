@@ -19,7 +19,6 @@ const bookingSlice = createSlice({
   reducers: {
     book(state, action: PayloadAction<Booking>) {
       state.bookings.push(action.payload);
-      console.log(state.bookings);
     },
   },
 });
