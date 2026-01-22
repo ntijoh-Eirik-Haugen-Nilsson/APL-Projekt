@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Booking = {
-  name: string;
+  content: string;
   date_booked: string;
 };
 
