@@ -1,4 +1,3 @@
-// authSlice.ts
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 
 type User = {
@@ -14,7 +13,6 @@ type AuthState = {
   error: string | null
 }
 
-// Async thunk för att hämta användare
 export const fetchUsers = createAsyncThunk<User[]>(
   'auth/fetchUsers',
   async (_, thunkAPI) => {
