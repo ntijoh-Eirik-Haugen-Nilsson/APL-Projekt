@@ -19,7 +19,7 @@ export const fetchUsers = createAsyncThunk<User[]>(
   'auth/fetchUsers',
   async (_, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:8080/users')
+      const response = await fetch('http://192.168.194.241:8080/users')
       if (!response.ok) throw new Error('Kunde inte hämta users')
       const data = (await response.json()) as User[]
     console.log("Fetched users:", data)
