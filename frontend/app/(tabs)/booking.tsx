@@ -11,19 +11,39 @@ import { useDispatch, useSelector } from "react-redux";
 import { book } from "../../store/BookingSlice";
 import { RootState } from "../../store/index";
 
-const box = require("../../assets/images/box.png");
+// const box = require("../../assets/images/box.png");
 
 export default function Booking() {
   const dispatch = useDispatch();
 
   const bookings = useSelector((state: RootState) => state.bookings.bookings);
+  const [error, setError] = React.useState(false);
 
   const [formContent, onChangeContent] = React.useState("");
+  const [formWeight, onChangeWeight] = React.useState("");
+  const [formLength, onChangeLength] = React.useState("");
+  const [formWidth, onChangeWidth] = React.useState("");
+  const [formHeight, onChangeHeight] = React.useState("");
 
   const handleBooking = () => {
+    if (
+      !formContent.trim() ||
+      !formWeight.trim() ||
+      !formLength.trim() ||
+      !formWidth.trim() ||
+      !formHeight.trim()
+    ) {
+      setError(true);
+      return;
+    }
+
+    setError(false);
+
     dispatch(
       book({
         content: formContent,
+        weight: formWeight,
+        dimentions: `${formLength} x ${formWidth} x ${formHeight}`,
         date_booked: new Date().toISOString(),
       }),
     );
@@ -41,12 +61,6 @@ export default function Booking() {
 
   return (
     <ScrollView style={styles.scrollView}>
-      {/* <Image
-        source={box}
-        style={{ width: 200, height: 200 }}
-        contentFit="contain"
-      ></Image> */}
-
       <View style={styles.container}>
         <TextInput
           style={styles.input}
@@ -55,10 +69,44 @@ export default function Booking() {
           value={formContent}
           onChangeText={onChangeContent}
         />
+        <TextInput
+          style={styles.input}
+          placeholder="Weight (kg)"
+          placeholderTextColor="grey"
+          value={formWeight}
+          onChangeText={onChangeWeight}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Length (cm)"
+          placeholderTextColor="grey"
+          value={formLength}
+          onChangeText={onChangeLength}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Width (cm)"
+          placeholderTextColor="grey"
+          value={formWidth}
+          onChangeText={onChangeWidth}
+          keyboardType="numeric"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Height (cm)"
+          placeholderTextColor="grey"
+          value={formHeight}
+          onChangeText={onChangeHeight}
+          keyboardType="numeric"
+        />
 
         <Pressable onPress={handleBooking} style={styles.pressable}>
           <Text style={styles.text}>Book</Text>
         </Pressable>
+
+        {error && <Text style={styles.error}>All fields must be filled!</Text>}
       </View>
 
       <View style={styles.container}>
@@ -126,5 +174,9 @@ const styles = StyleSheet.create({
   },
   bookingText: {
     margin: 2,
+  },
+  error: {
+    color: "red",
+    marginTop: 8,
   },
 });
