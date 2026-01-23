@@ -1,6 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+// authSlice.ts
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 
 type User = {
+  id: string
   username: string
   password: string
   name: string
@@ -12,19 +14,24 @@ type AuthState = {
   error: string | null
 }
 
-const initialState: AuthState = {
-  users: [
-    {
-      username: 'hannes',
-      password: '1234',
-      name: 'Hannes'
-    },
-    {
-      username: 'eirik',
-      password: '1234',
-      name: 'Eirik'
+// Async thunk för att hämta användare
+export const fetchUsers = createAsyncThunk<User[]>(
+  'auth/fetchUsers',
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetch('http://localhost:8080/users')
+      if (!response.ok) throw new Error('Kunde inte hämta users')
+      const data = (await response.json()) as User[]
+    console.log("Fetched users:", data)
+      return data
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message)
     }
-  ],
+  }
+)
+
+const initialState: AuthState = {
+  users: [],
   currentUser: null,
   error: null
 }
@@ -53,8 +60,17 @@ const authSlice = createSlice({
     logout(state) {
       state.currentUser = null
     }
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(fetchUsers.fulfilled, (state, action) => {
+        state.users = action.payload 
+        state.error = null
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.error = action.payload as string
+      })
   }
 })
-
 export const { login, logout } = authSlice.actions
 export default authSlice.reducer
