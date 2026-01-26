@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 
+
 type User = {
   id: string
   username: string
@@ -17,7 +18,11 @@ export const fetchUsers = createAsyncThunk<User[]>(
   'auth/fetchUsers',
   async (_, thunkAPI) => {
     try {
-      const response = await fetch('http://192.168.194.241:8080/users')
+      const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
+      if (!BASE_URL) {
+        throw new Error("API URL is not defined");
+      }
+      const response = await fetch(`${BASE_URL}/users`)
       if (!response.ok) throw new Error('Kunde inte hämta users')
       const data = (await response.json()) as User[]
     console.log("Fetched users:", data)
