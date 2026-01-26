@@ -43,7 +43,7 @@ export default function Booking() {
       book({
         content: formContent,
         weight: formWeight,
-        dimentions: `${formLength} x ${formWidth} x ${formHeight}`,
+        dimensions: `${formLength} x ${formWidth} x ${formHeight}`,
         date_booked: new Date().toISOString(),
       }),
     );
