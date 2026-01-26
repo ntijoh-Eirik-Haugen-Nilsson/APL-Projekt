@@ -15,6 +15,9 @@ export default function Profile() {
   return (
     <View style={{ padding: 20 }}>
       <Text style={{ fontSize: 24, marginBottom: 20 }}>
+        ID: {user?.id}
+      </Text>
+      <Text style={{ fontSize: 24, marginBottom: 20 }}>
         Name: {user?.name}
       </Text>
       <Text style={{ fontSize: 24, marginBottom: 20 }}>
