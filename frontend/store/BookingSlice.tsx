@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 type Booking = {
   content: string;
@@ -68,21 +68,29 @@ const bookingSlice = createSlice({
   initialState,
   reducers: {
 
-    book(state, action: PayloadAction<Booking>) {
-      state.bookings.push(action.payload);
-      console.log("New booking added:", action.payload);
-    },
+    // book(state, action: PayloadAction<Booking>) {
+    //   state.bookings.push(action.payload);
+    //   console.log("New booking added:", action.payload);
+    // },
   },
     extraReducers: (builder) => {
     builder
-      .addCase(fetchBookings.fulfilled, (state, action) => {
-        state.bookings = action.payload;
-      })
-      .addCase(fetchBookings.rejected, (state, action) => {
-        console.error("Fetch bookings failed:", action.payload);
-      });
-  },
+    .addCase(fetchBookings.fulfilled, (state, action) => {
+      state.bookings = action.payload;
+    })
+    .addCase(createBooking.fulfilled, (state, action) => {
+      state.bookings.push(action.payload);
+      console.log("Booking added to store:", action.payload);
+    })
+    .addCase(fetchBookings.rejected, (state, action) => {
+      console.error("Fetch bookings failed:", action.payload);
+    })
+    .addCase(createBooking.rejected, (state, action) => {
+      console.error("Create booking failed:", action.payload);
+    });
+},
+
 });
 
-export const { book } = bookingSlice.actions;
+// export const { book } = bookingSlice.actions;
 export default bookingSlice.reducer;

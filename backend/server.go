@@ -23,13 +23,13 @@ var users []User = []User{
 type Booking struct {
   Content string `json:"content"`
   Weight  string `json:"weight"`
-  Dimentions string `json:"dimentions"`
+  Dimensions string `json:"dimensions"`
   DateBooked string `json:"date_booked"`
 }
 
 var bookings []Booking = []Booking{
-	{Content: "Bokning 1", Weight: "10kg", Dimentions: "50x30x20", DateBooked: "2024-05-20"},
-	{Content: "Bokning 2", Weight: "15kg", Dimentions: "60x40x30", DateBooked: "2024-05-21"},
+	{Content: "Bokning 1", Weight: "10kg", Dimensions: "50x30x20", DateBooked: "2026-01-20"},
+	{Content: "Bokning 2", Weight: "15kg", Dimensions: "60x40x30", DateBooked: "2026-01-21"},
 }
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func corsMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusOK)
+			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 
@@ -46,14 +46,16 @@ func corsMiddleware(next http.Handler) http.Handler {
 	})
 }
 
+
 func main() {
 	router := mux.NewRouter().StrictSlash(true)
 	router.Use(corsMiddleware)
+	router.HandleFunc("/bookings", getBookings).Methods("GET", "OPTIONS")
+	router.HandleFunc("/bookings", createBooking).Methods("POST", "OPTIONS")
 
-	router.HandleFunc("/users", getUsers).Methods("GET")
-	router.HandleFunc("/users", createUser).Methods("POST")
-	router.HandleFunc("/bookings", getBookings).Methods("GET")
-	router.HandleFunc("/bookings", createBooking).Methods("POST")
+	router.HandleFunc("/users", getUsers).Methods("GET", "OPTIONS")
+	router.HandleFunc("/users", createUser).Methods("POST", "OPTIONS")
+
 
 	log.Println("Registered routes:")
 	router.Walk(func(route *mux.Route, router *mux.Router, ancestors []*mux.Route) error {
@@ -106,6 +108,7 @@ func createBooking(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "OPTIONS" {
 		return
 	}
+	log.Println("Received request to create booking")
 	w.Header().Set("Content-Type", "application/json")
 	var newBooking Booking
 	_ = json.NewDecoder(r.Body).Decode(&newBooking)

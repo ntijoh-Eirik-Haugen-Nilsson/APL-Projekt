@@ -7,14 +7,16 @@ import {
   TextInput,
   View,
 } from "react-native";
+import type { AppDispatch } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { book } from "../../store/BookingSlice";
+import { createBooking } from "../../store/BookingSlice";
 import { RootState } from "../../store/index";
 
 // const box = require("../../assets/images/box.png");
 
 export default function Booking() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
 
   const bookings = useSelector((state: RootState) => state.bookings.bookings);
   const [error, setError] = React.useState(false);
@@ -25,7 +27,7 @@ export default function Booking() {
   const [formWidth, onChangeWidth] = React.useState("");
   const [formHeight, onChangeHeight] = React.useState("");
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (
       !formContent.trim() ||
       !formWeight.trim() ||
@@ -39,15 +41,23 @@ export default function Booking() {
 
     setError(false);
 
-    dispatch(
-      book({
+    await dispatch(
+      createBooking({
         content: formContent,
         weight: formWeight,
         dimensions: `${formLength} x ${formWidth} x ${formHeight}`,
         date_booked: new Date().toISOString(),
-      }),
-    );
+      })
+    ).unwrap();
+
+    onChangeContent("");
+    onChangeWeight("");
+    onChangeLength("");
+    onChangeWidth("");
+    onChangeHeight("");
   };
+
+  
 
   function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString("sv-SE");
