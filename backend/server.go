@@ -34,7 +34,7 @@ var bookings []Booking = []Booking{
 func corsMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
 
 		if r.Method == http.MethodOptions {
@@ -52,7 +52,7 @@ func main() {
 	router.Use(corsMiddleware)
 	router.HandleFunc("/bookings", getBookings).Methods("GET", "OPTIONS")
 	router.HandleFunc("/bookings", createBooking).Methods("POST", "OPTIONS")
-
+	router.HandleFunc("/bookings/{date_booked}", deleteBooking).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/users", getUsers).Methods("GET", "OPTIONS")
 	router.HandleFunc("/users", createUser).Methods("POST", "OPTIONS")
 
@@ -114,4 +114,23 @@ func createBooking(w http.ResponseWriter, r *http.Request) {
 	_ = json.NewDecoder(r.Body).Decode(&newBooking)
 	bookings = append(bookings, newBooking)
 	json.NewEncoder(w).Encode(newBooking)
+}
+
+func deleteBooking(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method == "OPTIONS" {
+		return
+	}
+	vars := mux.Vars(r)
+	dateBooked := vars["date_booked"]
+	log.Println("Received request to delete booking with date_booked:", dateBooked)
+
+	for i, booking := range bookings {
+		if booking.DateBooked == dateBooked {
+			bookings = append(bookings[:i], bookings[i+1:]...)
+			log.Println("Deleted booking with date_booked:", dateBooked)
+			break
+		}
+	}
+	w.WriteHeader(http.StatusNoContent)
 }

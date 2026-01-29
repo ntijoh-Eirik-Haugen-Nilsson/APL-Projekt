@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import type { AppDispatch } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { createBooking } from "../../store/BookingSlice";
+import { createBooking, deleteBooking } from "../../store/BookingSlice";
 import { RootState } from "../../store/index";
 
 // const box = require("../../assets/images/box.png");
@@ -119,7 +119,7 @@ export default function Booking() {
         {error && <Text style={styles.error}>All fields must be filled!</Text>}
       </View>
 
-      <View style={styles.container}>
+      <View style={styles.containerList}>
         {bookings.map((booking, index) => (
           <View key={index} style={styles.bookingItem}>
             <Text style={styles.bookingText}>{booking.content}</Text>
@@ -137,6 +137,9 @@ export default function Booking() {
                 {formatTime(booking.date_booked)}
               </Text>
             </View>
+              <Pressable style={styles.deleteButton} onPress={() => dispatch(deleteBooking(booking.date_booked))}>
+                <Text style={{ color: "red", }}>Delete</Text>
+              </Pressable>
           </View>
         ))}
       </View>
@@ -148,6 +151,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 20,
+  },
+  containerList: {
     alignItems: "center",
     paddingTop: 20,
   },
@@ -188,5 +195,13 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginTop: 8,
+  },
+  deleteButton: {
+    color: "red",
+    borderRadius: 5,
+    padding: 5,
+    marginTop: 8,
+    alignItems: "center",
+    borderWidth: 1,
   },
 });
