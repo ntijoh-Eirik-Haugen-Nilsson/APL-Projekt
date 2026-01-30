@@ -1,11 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-type Booking = {
-  content: string;
-  weight: string;
-  dimensions: string;
-  date_booked: string;
-};
+import { Booking } from "../types/booking";
 
 type BookingState = {
   bookings: Booking[];

@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-
-
-type User = {
-  id: string
-  username: string
-  password: string
-  name: string
-}
+import { User } from '../types/user'
 
 type AuthState = {
   users: User[]
