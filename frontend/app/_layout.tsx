@@ -4,12 +4,14 @@ import { store } from "../store"
 import { useEffect } from "react"
 import { fetchUsers } from "../store/AuthSlice"
 import type { AppDispatch } from "../store"
+import { fetchBookings } from "@/store/BookingSlice"
 
 function InitAuth() {
   const dispatch = useDispatch<AppDispatch>()
 
   useEffect(() => {
     dispatch(fetchUsers())
+    dispatch(fetchBookings())
   }, [dispatch])
 
   return null

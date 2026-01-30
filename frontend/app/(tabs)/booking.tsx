@@ -7,14 +7,16 @@ import {
   TextInput,
   View,
 } from "react-native";
+import type { AppDispatch } from "../../store";
 import { useDispatch, useSelector } from "react-redux";
-import { book } from "../../store/BookingSlice";
+import { createBooking, deleteBooking } from "../../store/BookingSlice";
 import { RootState } from "../../store/index";
 
 // const box = require("../../assets/images/box.png");
 
 export default function Booking() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
+
 
   const bookings = useSelector((state: RootState) => state.bookings.bookings);
   const [error, setError] = React.useState(false);
@@ -25,7 +27,7 @@ export default function Booking() {
   const [formWidth, onChangeWidth] = React.useState("");
   const [formHeight, onChangeHeight] = React.useState("");
 
-  const handleBooking = () => {
+  const handleBooking = async () => {
     if (
       !formContent.trim() ||
       !formWeight.trim() ||
@@ -39,15 +41,23 @@ export default function Booking() {
 
     setError(false);
 
-    dispatch(
-      book({
+    await dispatch(
+      createBooking({
         content: formContent,
         weight: formWeight,
-        dimentions: `${formLength} x ${formWidth} x ${formHeight}`,
+        dimensions: `${formLength} x ${formWidth} x ${formHeight}`,
         date_booked: new Date().toISOString(),
-      }),
-    );
+      })
+    ).unwrap();
+
+    onChangeContent("");
+    onChangeWeight("");
+    onChangeLength("");
+    onChangeWidth("");
+    onChangeHeight("");
   };
+
+  
 
   function formatDate(iso: string) {
     return new Date(iso).toLocaleDateString("sv-SE");
@@ -109,7 +119,7 @@ export default function Booking() {
         {error && <Text style={styles.error}>All fields must be filled!</Text>}
       </View>
 
-      <View style={styles.container}>
+      <View style={styles.containerList}>
         {bookings.map((booking, index) => (
           <View key={index} style={styles.bookingItem}>
             <Text style={styles.bookingText}>{booking.content}</Text>
@@ -127,6 +137,9 @@ export default function Booking() {
                 {formatTime(booking.date_booked)}
               </Text>
             </View>
+              <Pressable style={styles.deleteButton} onPress={() => dispatch(deleteBooking(booking.date_booked))}>
+                <Text style={{ color: "red", }}>Delete</Text>
+              </Pressable>
           </View>
         ))}
       </View>
@@ -138,6 +151,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 20,
+  },
+  containerList: {
     alignItems: "center",
     paddingTop: 20,
   },
@@ -178,5 +195,13 @@ const styles = StyleSheet.create({
   error: {
     color: "red",
     marginTop: 8,
+  },
+  deleteButton: {
+    color: "red",
+    borderRadius: 5,
+    padding: 5,
+    marginTop: 8,
+    alignItems: "center",
+    borderWidth: 1,
   },
 });
